@@ -10,7 +10,7 @@ const chainId = 1337;
 // > solcjs --bin --abi simplestorage.sol
 const contractJsonPath = path.resolve(
   __dirname,
-  "../../",
+  "../",
   "contracts",
   "SimpleStorage.json"
 );

@@ -65,6 +65,10 @@ $ kubectl version
 ```bash
 # não são necessários para o funcionamento da rede 
 
+helm repo add elastic https://helm.elastic.co
+
+helm repo update
+
  helm install elasticsearch --version 8.5.1  elastic/elasticsearch --namespace quorum --create-namespace --values ./values/elasticsearch.yml --set replicas=1 --set minimumMasterNodes=1 
 
 
@@ -86,6 +90,9 @@ filebeat-*
 # Monitorar o rede Besus
 
 ```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
 # utilizado para moniturar a rede
 helm install monitoring prometheus-community/kube-prometheus-stack --version 34.10.0 --namespace quorum --create-namespace --values ./values/monitoring.yml --wait
 

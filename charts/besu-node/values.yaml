@@ -4,11 +4,11 @@ quorumFlags:
   privacy: false
   # this will erase keys - so be careful with this on validators
   removeKeysOnDelete: false
-  isBootnode: true    # set this to true if this node is a bootnode
+  isBootnode: true # set this to true if this node is a bootnode
   usesBootnodes: true # set this to true if the network you are connecting to use a bootnode/s that are deployed in the cluster 
 
 cluster:
-  provider: local  # choose from: local | aws | azure
+  provider: local # choose from: local | aws | azure
   cloudNativeServices: false # set to true to use Cloud Native Services (SecretsManager and IAM for AWS; KeyVault & Managed Identities for Azure)
   reclaimPolicy: Delete # set to either Retain or Delete
 
@@ -43,8 +43,8 @@ storage:
 
 # fixes permissions of volumes becuase besu runs as user `besu` and volumes prefer `root`
 volumePermissionsFix:
-  - local
-  - aws
+- local
+- aws
 
 node:
   besu:
@@ -60,7 +60,7 @@ node:
     keysPath: "/keys"
     privateKeyPath: "/keys/nodekey"
     genesisFilePath: "/etc/genesis/genesis.json"
-    logging: INFO
+    logging: TRACE
     customLabels: {}
     account:
       password: 'password'
@@ -88,7 +88,7 @@ node:
       api: '["DEBUG","ETH", "ADMIN", "WEB3", "IBFT", "NET", "TRACE", "EEA", "PRIV", "QBFT", "PERM", "TXPOOL"]'
       authenticationEnabled: false
     graphql:
-      enabled: false
+      enabled: true
       host: "0.0.0.0"
       port: 8547
       corsOrigins: '["all"]'
@@ -99,7 +99,7 @@ node:
       host: "0.0.0.0"
       port: 9545
       # enable if using prometheus-stack metrics monitoring
-      serviceMonitorEnabled: false      
+      serviceMonitorEnabled: false
     metricsPush:
       enabled: false
       host: "5.5.5.5"
@@ -116,16 +116,16 @@ node:
       filePath: ""
       nodes:
         enabled: false
-        allowlist: ["enode://abcd..@1.2.3.3:30303","enode://efba..@1.2.3.4:besu-node-bootnode-1-0.besu-node-bootnode-1.besu.svc.cluster.local:30303"]
+        allowlist: [ "enode://abcd..@1.2.3.3:30303", "enode://efba..@1.2.3.4:besu-node-bootnode-1-0.besu-node-bootnode-1.besu.svc.cluster.local:30303" ]
       accounts:
         enabled: false
-        allowlist: ["0x0000000000000000000000000000000000008888"]
+        allowlist: [ "0x0000000000000000000000000000000000008888" ]
       nodesContract:
         enabled: false
         address: "0x0000000000000000000000000000000000009999"
       accountsContract:
         enabled: false
-        address: "0x0000000000000000000000000000000000008888"  
+        address: "0x0000000000000000000000000000000000008888"
 
   tessera:
     resources:
@@ -146,14 +146,13 @@ node:
 image:
   besu:
     repository: hyperledger/besu
-    tag: 24.12.1
+    tag: 25.3.0
     pullPolicy: IfNotPresent
   tessera:
     repository: quorumengineering/tessera
-    tag: 24.4
+    tag: 24.4.2
     pullPolicy: IfNotPresent
   hooks:
     repository: consensys/quorum-k8s-hooks
-    tag: qgt-0.2.18
+    tag: qgt-0.2.20
     pullPolicy: IfNotPresent
-

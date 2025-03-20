@@ -275,8 +275,8 @@ spec:
             exec
             /opt/besu/bin/besu \
               --config-file=/etc/besu/config.toml \
-              --Xdns-enabled=true --Xdns-update-enabled=true \
-              --min-gas-price=0 
+              --Xdns-enabled=true --Xdns-update-enabled=true
+               --min-gas-price=0  
 
         livenessProbe:
           httpGet:

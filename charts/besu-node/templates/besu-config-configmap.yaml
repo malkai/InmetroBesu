@@ -24,8 +24,7 @@ data:
     data-path={{ .Values.node.besu.dataPath | quote }}
     genesis-file={{ .Values.node.besu.genesisFilePath | quote }}
     logging={{ .Values.node.besu.logging | quote }}
-    node-private-key-file={{.Values.node.besu.privateKeyPath | quote }}
-    data-storage-format=FOREST
+    node-private-key-file={{ .Values.node.besu.privateKeyPath | quote }}
 
     {{ if  .Values.node.besu.p2p.enabled -}}
     # P2P network
@@ -85,7 +84,7 @@ data:
     {{ if  .Values.quorumFlags.privacy -}}
     # Privacy
     privacy-enabled={{ .Values.quorumFlags.privacy }}
-    privacy-url={{ .Values.node.besu.privacy.url | quote }}
+    privPodInitializingacy-url={{ .Values.node.besu.privacy.url | quote }}
     {{- if and (ne .Values.cluster.provider "local") (.Values.cluster.cloudNativeServices) }}
     privacy-public-key-file="{{ .Values.node.besu.keysPath }}/{{ .Values.node.besu.privacy.pubkeyFile }}"
     {{ else }}

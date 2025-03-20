@@ -148,8 +148,9 @@ helm install quorum-monitoring-ingress ingress-nginx/ingress-nginx \
     --set defaultBackend.nodeSelector."kubernetes\.io/os"=linux \
     --set controller.admissionWebhooks.patch.nodeSelector."kubernetes\.io/os"=linux \
     --set controller.service.externalTrafficPolicy=Local \
-    --set controller.config.allow-snippet-annotations="true"
+    --set controller.config.allow-snippet-annotations="true" \  --set controller.config.annotations-risk-level="Critical"
 ```
+
 
 kubectl get service --namespace quorum quorum-monitoring-ingress-ingress-nginx-controller --output wide --watch
 
@@ -300,7 +301,10 @@ helm install quorum-network-ingress ingress-nginx/ingress-nginx \
     --set controller.nodeSelector."kubernetes\.io/os"=linux \
     --set defaultBackend.nodeSelector."kubernetes\.io/os"=linux \
     --set controller.admissionWebhooks.patch.nodeSelector."kubernetes\.io/os"=linux \
-    --set controller.service.externalTrafficPolicy=Local
+    --set controller.service.externalTrafficPolicy=Local \
+    --set controller.config.allow-snippet-annotations="true" \ 
+    --set controller.config.annotations-risk-level="Critical" 
+
 
 kubectl apply -f ../ingress/ingress-rules-besu.yml
 ```

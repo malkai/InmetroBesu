@@ -4,41 +4,24 @@ Este é um tutorial simples para a criação de uma rede Besu privada utilizando
 
 # Tecnologias necessárias
 ```bash
-sudo apt install git -y
-sudo apt install curl
+git
 
-# Add Docker's official GPG key:
-sudo apt-get update
-sudo apt-get install ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
+curl
 
-# Add the repository to Apt sources:
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
+docker
 
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+helm
 
-sudo groupadd docker
-sudo usermod -aG docker $USER
-newgrp docker
+kubectl
 
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod 700 get_helm.sh
-./get_helm.sh
-
-sudo snap install kubectl --classic
-
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-
-sudo install minikube-linux-amd64 /usr/local/bin/minikube
+minikube
+```
 
 
-
+# Script de instalação em máquinas ubuntu
+```bash
+sudo chmod +x install.sh
+sudo ./install.sh
 ```
 
 # Iniciar o Cluster utilizando o minikube
@@ -107,24 +90,27 @@ kubectl --namespace quorum apply -f  ./values/monitoring/
 helm install quorum-monitoring-ingress ingress-nginx/ingress-nginx     --namespace quorum     --set controller.ingressClassResource.name="monitoring-nginx"     --set controller.ingressClassResource.controllerValue="k8s.io/monitoring-ingress-nginx"     --set controller.replicaCount=1     --set controller.nodeSelector."kubernetes\.io/os"=linux     --set defaultBackend.nodeSelector."kubernetes\.io/os"=linux     --set controller.admissionWebhooks.patch.nodeSelector."kubernetes\.io/os"=linux     --set controller.service.externalTrafficPolicy=Local     --set controller.config.allow-snippet-annotations="true"     --set controller.config.annotations-risk-level="Critical"
 ```
 
-# Arquivos para a montagem da rede
+# Arquivos para explorar os blocos criados pela rede
 ```bash
 # Explorador de Blockchain para inspecionar, analisar e interagir com cadeias EVM, rollups otimistas e zk-rollups.
 helm install blockscout ./charts/blockscout --namespace quorum --create-namespace --values ./values/blockscout-besu.yml
 
 # Quorum-Explorer é um explorador de blockchain leve. O Quorum Explorer não é recomendado para uso em produção e destina-se apenas a fins de demonstração/desenvolvimento.
 helm install quorum-explorer ./charts/explorer --namespace quorum --create-namespace  --values ./values/explorer-besu.yaml
+```
 
+# Arquivos para a montagem da rede
+```bash
 #A instalação do bloco Gênesis nesta rede possui uma diferença em relação à rede utilizada no tutorial. Aqui, é utilizado o **quorum-genesis-tool**, localizado em genesis-job-init.yaml, na linha 112.
 helm install genesis ./charts/besu-genesis --namespace quorum --create-namespace --values ./values/genesis-besu.yml
 
 # Bootnodes são nós especiais em uma rede blockchain que ajudam novos nós a se conectarem à rede. Eles funcionam como pontos de entrada iniciais, fornecendo uma lista de outros nós ativos para que um novo nó possa estabelecer conexões com a rede. (OBS: sem eles a rede demora a levantar)
 helm install bootnode-1 ./charts/besu-node --namespace quorum --values ./values/bootnode.yml
 
+#Se tiver poder computacional sobrando 
 helm install bootnode-2 ./charts/besu-node --namespace quorum --values ./values/bootnode.yml
 
 # !! IMPORTANTE !! - Se você usar bootnodes, defina quorumFlags.usesBootnodes: true nos arquivos YAML de substituição (override).
-
 
 # All 4 validators must be started for the blocks to be produced.
 helm install validator-1 ./charts/besu-node --namespace quorum --values ./values/validator.yml
@@ -156,3 +142,29 @@ kubectl get service -n quorum
 
 ```
 
+# Deploy do contrato 
+
+```bash
+cd smart_contract
+
+npm i
+
+cd deploy_contracts 
+
+node hre_public_tx.js 
+
+```
+
+# Caso deseje compilar os contratos
+
+```bash
+cd smart_contract
+
+
+cd deploy_contracts 
+
+
+node compile.js 
+
+#colocar os contratos na pasta contracts
+```

@@ -29,19 +29,13 @@ sudo ./install.sh
 
 minikube start --memory 16384 --cpus 6 --cni auto
 
-# Não necessário 
-minikube addons enable ingress
 
-# caso você tenha uma interface gráfica
-minikube dashboard &
 ```
-Verify kubectl is connected to Minikube with: (please use the latest version of kubectl)
+Verifique se o kubectl está conectado ao Minikube com: (use a versão mais recente do kubectl)
 
 ```bash
 $ kubectl version
 ```
-
-
 
 
 # Monitorar o rede Besus
@@ -73,11 +67,13 @@ helm install validator-2 ./charts/besu-node --namespace quorum --values ./values
 helm install validator-3 ./charts/besu-node --namespace quorum --values ./values/validator.yml
 helm install validator-4 ./charts/besu-node --namespace quorum --values ./values/validator.yml
 
-# spin up a quorum rpc node
+# crie um nó quorum rpc
 helm install rpc-1 ./charts/besu-node --namespace quorum --values ./values/reader.yml
 
 #Para fins de testes inicias abrir a porta 8545 com o comando
-kubectl port-forward service/besu-node-rpc-1 8545:8545  -n quorum &
+
+kubectl port-forward service/quorum-explorer 80:80  -n quorum &
+kubectl port-forward service/besu-node-rpc-1 8545:8545  -n quorum 
 ```
 
 # Comandos para verificar os nós
@@ -98,7 +94,7 @@ kubectl get pods -n quorum
 # Deploy do contrato 
 
 ```bash
-cd smart_contract
+cd smart_contracts
 
 npm i
 
@@ -111,7 +107,7 @@ node hre_public_tx.js
 # Caso deseje compilar os contratos
 
 ```bash
-cd smart_contract
+cd smart_contracts
 
 
 cd deploy_contracts 
@@ -124,10 +120,15 @@ node compile.js
 
 # Comandos adicionais
 
-# Ferramentas para verificar a saúde do cluster (opcional )
+Não são necessários para o funcionamento da rede 
+
+## Ferramentas para verificar a saúde do cluster (opcional )
 
 ```bash
-# não são necessários para o funcionamento da rede 
+
+minikube addons enable ingress
+
+minikube dashboard &
 
 helm repo add elastic https://helm.elastic.co
 
@@ -151,9 +152,9 @@ criar um indexidor no elastic com o comando abaixo
 
 filebeat-* 
 
-# Arquivos para explorar os blocos criados pela rede  (opcional )
+## Arquivos para explorar os blocos criados pela rede  (opcional )
 ```bash
-# não são necessários para o funcionamento da rede 
+ 
 
 # Explorador de Blockchain para inspecionar, analisar e interagir com cadeias EVM, rollups otimistas e zk-rollups.
 helm install blockscout ./charts/blockscout --namespace quorum --create-namespace --values ./values/blockscout-besu.yml
